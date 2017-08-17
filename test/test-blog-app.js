@@ -3,8 +3,6 @@ const chaiHttp = require('chai-http');
 const faker = require('faker');
 const mongoose = require('mongoose');
 
-// this makes the should syntax available throughout
-// this module
 const should = chai.should();
 
 const {DATABASE_URL} = require('../config');
@@ -14,10 +12,7 @@ const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);
 
-// this function deletes the entire database.
-// we'll call it in an `afterEach` block below
-// to ensure  ata from one test does not stick
-// around for next one
+
 function tearDownDb() {
   return new Promise((resolve, reject) => {
     console.warn('Deleting database');
@@ -28,11 +23,6 @@ function tearDownDb() {
 }
 
 
-// used to put randomish documents in db
-// so we have data to work with and assert about.
-// we use the Faker library to automatically
-// generate placeholder values for author, title, content
-// and then we insert that data into mongo
 function seedBlogPostData() {
   console.info('seeding blog post data');
   const seedData = [];
@@ -46,7 +36,7 @@ function seedBlogPostData() {
       content: faker.lorem.text()
     });
   }
-  // this will return a promise
+  
   return BlogPost.insertMany(seedData);
 }
 
@@ -62,8 +52,7 @@ describe('blog posts API resource', function() {
   });
 
   afterEach(function() {
-    // tear down database so we ensure no state from this test
-    // effects any coming after.
+    
     return tearDownDb();
   });
 
